@@ -12,10 +12,9 @@ resource "aws_instance" "flask_app" {
               #!/bin/bash
               sudo yum update -y
               sudo yum install -y python3
-              git clone https://github.com/tu-usuario/tu-repo.git  # Cambia esto a tu repositorio de código
-              cd tu-repo
+              git clone https://github.com/victorm44/Devops-Terraform.git  
               pip3 install -r requirements.txt
-              python3 app.py
+              python3 main.py
               EOF
 }
 
