@@ -1,23 +1,22 @@
 provider "aws" {
-  region = "us-east-1"  # Cambia esto a tu región preferida de AWS
+  region = "us-east-1"
+  version = "~> 3.0"
 }
 
-resource "aws_instance" "flask_app" {
-  ami           = "ami-0c55b159cbfafe1f0"  # AMI de Amazon Linux 2
-  instance_type = "t2.micro"  # Tipo de instancia
-  key_name      = "tu-key-pair"  # Cambia esto a tu clave SSH existente
-  security_group = ["tu-security-group"]  # Cambia esto a tu grupo de seguridad existente
+#variable "vpc_id" {
+#  type    = string
+#  default = "vpc-0008e62433f10f169"
+#}
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo yum update -y
-              sudo yum install -y python3
-              git clone https://github.com/victorm44/Devops-Terraform.git  
-              pip3 install -r requirements.txt
-              python3 main.py
-              EOF
-}
-
-output "public_ip" {
-  value = aws_instance.flask_app.public_ip
+resource "aws_db_instance" "dbmovies" {
+  identifier           = "dbmovies"
+  allocated_storage    = 20
+  storage_type         = "gp2"
+  engine               = "mysql"
+  engine_version       = "8.0.33"
+  instance_class       = "db.t2.micro"
+  name                 = "movies1"
+  username             = "peliculas"
+  password             = "devops123"
+  publicly_accessible = true
 }
