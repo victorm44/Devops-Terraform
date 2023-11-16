@@ -3,6 +3,7 @@ import mysql.connector
 from pydantic import BaseModel
 from typing import List, Optional
 import threading
+import os
 
 db_lock = threading.Lock()
 
@@ -20,8 +21,9 @@ class Genre(BaseModel):
     name: str
     description: str
 
+db_host = os.environ.get("DB_HOST", "dbpeliculas.cngxgieez1vi.us-east-1.rds.amazonaws.com")
 db_connection = mysql.connector.connect(
-    host="dbpeliculas.cngxgieez1vi.us-east-1.rds.amazonaws.com",
+    host=db_host,
     user="peliculas",
     password="devops123",
 )
@@ -94,10 +96,10 @@ def update_movie(updated_movie: Movie) -> Optional[Movie]:
     try:
         with db_lock:
             db_connection = mysql.connector.connect(
-                host="your_db_host",
-                user="your_db_user",
-                password="your_db_password",
-                database="your_db_name"
+                host="dbpeliculas.cngxgieez1vi.us-east-1.rds.amazonaws.com",
+                user="peliculas",
+                password="devops123",
+                database="movies"
             )
             
             db_cursor = db_connection.cursor()

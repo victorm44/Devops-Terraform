@@ -1,6 +1,10 @@
+#main.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import os 
 from database import Genre, Movie, create_tables, insert_genre, get_all_genres, create_movie_table, insert_movie, get_all_movies, update_movie, close_connection
+
+os.environ["DB_HOST"] = "aws_db_instance.dbmovies.address"
 
 app = Flask(__name__)
 CORS(app)

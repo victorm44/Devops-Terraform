@@ -1,0 +1,48 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r app/requirements.txt 
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Init
+      run: |
+        cd infra/
+        terraform init
+
+    - name: Terraform Apply
+      run: |
+        cd infra/
+        terraform apply -auto-approve
+
+    - name: Deploy Application
+      run: |
+        cd app/
+        pip install -r requirements.txt
+        gunicorn -w 4 -b 0.0.0.0:8000 main:app
+    - name: Terraform Destroy (opcional)
+      run: |
+        cd infra/
+        terraform destroy -auto-approve
+
