@@ -21,12 +21,17 @@ class Genre(BaseModel):
     description: str
 
 db_connection = mysql.connector.connect(
-    host="movies.cq3uhpaxbbnu.us-east-1.rds.amazonaws.com",
-    user="movies",
-    password="moviesAdmin123",
-    database="movies"
+    host="dbpeliculas.cngxgieez1vi.us-east-1.rds.amazonaws.com",
+    user="peliculas",
+    password="devops123",
 )
 db_cursor = db_connection.cursor()
+
+# Crear la base de datos "movies" si no existe
+db_cursor.execute("CREATE DATABASE IF NOT EXISTS movies")
+
+# Utilizar la base de datos "movies"
+db_cursor.execute("USE movies")
 
 def create_movie_table():
     with db_lock:
