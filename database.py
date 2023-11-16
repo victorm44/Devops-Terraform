@@ -1,4 +1,3 @@
-#database.py
 import mysql.connector
 from pydantic import BaseModel
 from typing import List, Optional
@@ -21,9 +20,8 @@ class Genre(BaseModel):
     name: str
     description: str
 
-db_host = os.environ.get("DB_HOST", "dbpeliculas.cngxgieez1vi.us-east-1.rds.amazonaws.com")
 db_connection = mysql.connector.connect(
-    host=db_host,
+    host="dbpeliculas.cngxgieez1vi.us-east-1.rds.amazonaws.com",
     user="peliculas",
     password="devops123",
 )
@@ -126,6 +124,11 @@ def update_movie(updated_movie: Movie) -> Optional[Movie]:
         print("Error updating movie:", e)
         return None
     
+def delete_movie_by_id(movie_id):
+    with db_lock:
+        db_cursor.execute('DELETE FROM movies WHERE id = %s', (movie_id,))
+        db_connection.commit()
+
 def drop_table(table_name: str):
     with db_lock:
         db_cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
